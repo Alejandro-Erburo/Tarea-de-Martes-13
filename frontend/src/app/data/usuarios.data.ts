@@ -8,7 +8,7 @@ export const USUARIOS_INICIALES: Usuario[] = [
         apellidos: 'Pérez',
         fecha_nacimiento: '2000-05-15',
         nombre_completo: 'Juena Pérez',
-        grupos: ['USUARIO'],
+        grupos: ['user'],
         activo: true
     },
     {
@@ -18,7 +18,7 @@ export const USUARIOS_INICIALES: Usuario[] = [
         apellidos: 'López',
         fecha_nacimiento: '1999-08-20',
         nombre_completo: 'María Lopez',
-        grupos: ['USUARIO', 'ADMIN'],
+        grupos: ['user', 'admin'],
         activo: false
     }
 ]

@@ -6,6 +6,7 @@ import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import { tareasRoutes } from './routes/tareas.routes.ts';
 import cors from '@fastify/cors';
+import fastifyJwt from '@fastify/jwt';
 
 const app = Fastify({
   logger: true
@@ -17,6 +18,15 @@ await app.register(swagger, {
       title: 'API de Usuarios y Tareas',
       description: 'API REST para gestionar usuarios y tareas',
       version: '1.0.0'
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
     }
   }
 });
@@ -27,6 +37,10 @@ await app.register(swaggerUI, {
 
 await app.register(cors, {
   origin: ['http://localhost:4200', 'http://127.0.0.1:4200']
+});
+
+await app.register(fastifyJwt, {
+  secret: process.env.JWT_SECRET ?? ''
 });
 
 await app.register(usuariosRoutes);

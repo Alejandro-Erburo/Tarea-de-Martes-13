@@ -4,7 +4,7 @@ export interface Tarea {
     grupo: string;
     titulo: string;
     descripcion: string;
-    prioridad: number;
+    prioridad: '0:baja' | '1:media' | '2:alta';
     creada: string;
     terminada: string | null;
     estado: string;
