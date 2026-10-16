@@ -46,38 +46,21 @@ class UsuariosRepository {
   }
 
   async crear(dto: CrearUsuarioType): Promise<Usuario> {
-    await myPool.query("BEGIN");
-
-    try {
-      const queryUsuario = `
-        INSERT INTO usuarios (username, nombres, apellidos, fecha_nacimiento, grupos)
-        VALUES ($1, $2, $3, $4, COALESCE($5, ARRAY['user']::TEXT[]))
-        RETURNING id_usuario;
-      `;
-
-      const queryCredenciales = `
-        INSERT INTO credenciales (id_usuario, password_hash)
-        VALUES ($1, crypt($2, gen_salt('bf')));
-      `;
-
-      const resultUsuario = await myPool.query(queryUsuario, [
+    const resultado = await myPool.query<Usuario>(
+      `INSERT INTO usuarios
+        (username, nombres, apellidos, fecha_nacimiento, grupos)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`,
+      [
         dto.username,
         dto.nombres,
         dto.apellidos,
         dto.fecha_nacimiento,
-        dto.grupos,
-      ]);
-      await myPool.query(queryCredenciales, [
-        resultUsuario.rows[0].id_usuario,
-        dto.password,
-      ]);
-      await myPool.query("COMMIT");
+        dto.grupos
+      ]
+    );
 
-      return this.obtenerPorId(resultUsuario.rows[0].id_usuario);
-    } catch (error) {
-      await myPool.query("ROLLBACK");
-      throw error;
-    }
+    return resultado.rows[0];
   }
 
   async actualizar(
@@ -88,6 +71,10 @@ class UsuariosRepository {
     const valores: any[] = [];
     let idx = 1;
 
+    if (dto.username !== undefined) {
+      campos.push(`username = $${idx++}`);
+      valores.push(dto.username);
+    }
     if (dto.nombres !== undefined) {
       campos.push(`nombres = $${idx++}`);
       valores.push(dto.nombres);

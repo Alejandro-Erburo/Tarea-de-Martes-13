@@ -1,0 +1,41 @@
+@if (esEdicion && usuario) {
+    <h2>Editar usuario</h2>
+        <h3>ID: {{ usuario.id_usuario }}</h3>
+        <h3>Nombre de usuario</h3>
+            <p>Actual: {{ usuario.username }}</p>
+            <label for="username">Nuevo:</label>
+            <input
+                id="username"
+                type="text"
+                [formField]="usuarioForm.username"
+            />
+        <h3>Nombres</h3>
+            <p>Actual: {{ usuario.nombres}}</p>
+            <label for="nombres">Nuevo:</label>
+            <input
+                id="nombres"
+                type="text"
+                [formField]="usuarioForm.nombres"
+            />
+        <h3>Apellidos</h3>
+            <p>Actual: {{ usuario.apellidos}}</p>
+            <label for="apellidos">Nuevo</label>
+            <input 
+                id="apellidos"
+                type="text"
+                [formField]="usuarioForm.apellidos"
+            />
+        <h3>Fecha de nacimiento</h3>
+            <p>Actual: {{ usuario.fecha_nacimiento}}</p>
+            <label for="fecha_nacimiento">Nuevo</label>
+            <input
+                id="fecha_nacimiento"
+                type="date"
+                min="1900-01-01"
+                max="2026-10-13"
+                required
+                [formField]="usuarioForm.fecha_nacimiento"
+            />
+} @else {
+    <h2>Crear usuario</h2>
+}
